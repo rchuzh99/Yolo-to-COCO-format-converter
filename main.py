@@ -17,12 +17,24 @@ import imagesize
 # Don't change the list name 'Classes'          #
 #################################################
 
-YOLO_DARKNET_SUB_DIR = "YOLO_darknet"
+"""
+dataset_root_dir/
+    labels/
+        Photo_00001.txt
+        Photo_00002.txt
+    Photo_00001.jpg
+    Photo_00002.jpg
+    
+    
+Commands:
+python main.py --yolo-subdir --path <Absolute path to dataset_root_dir> --output <Name of the json file>
+python main.py --yolo-subdir --box2seg --path <Absolute path to dataset_root_dir> --output <Name of the json file>
+"""
+
+YOLO_DARKNET_SUB_DIR = "labels"
 
 classes = [
-    "matricula",
-    "cara"
-]
+    'Platelets', 'RBC', 'WBC']
 
 
 def get_images_info_and_annotations(opt):
@@ -84,7 +96,7 @@ def get_images_info_and_annotations(opt):
                 width = int(float_width)
                 height = int(float_height)
 
-                if opt.results == True: #yolo_result to Coco_result (saves confidence)
+                if opt.results is True: #yolo_result to Coco_result (saves confidence)
                     conf = float(label_line.split()[5])
                     annotation = create_annotation_from_yolo_results_format(
                         min_x,
@@ -241,7 +253,7 @@ def main(opt):
             }
             coco_format["categories"].append(categories)
 
-        if opt.results == True:
+        if opt.results is True:
             dict_list = []
             for l in coco_format["annotations"]:
                 dict_list.append(l[0])
